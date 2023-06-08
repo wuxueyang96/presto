@@ -14,6 +14,7 @@
 package com.facebook.presto.sql.planner;
 
 import com.facebook.airlift.json.Codec;
+import com.facebook.airlift.json.JsonCodec;
 import com.facebook.presto.common.type.Type;
 import com.facebook.presto.cost.StatsAndCosts;
 import com.facebook.presto.operator.StageExecutionDescriptor;
@@ -173,6 +174,16 @@ public class PlanFragment
             lastUsedCodec = codec;
         }
         return cachedSerialization;
+    }
+
+    public synchronized String toJson(Codec<PlanFragment> codec)
+    {
+        if (codec instanceof JsonCodec)
+        {
+            JsonCodec<PlanFragment> jsonCodec = (JsonCodec<PlanFragment>) codec;
+            return jsonCodec.toJson(this);
+        }
+        return "NotJsonCodec";
     }
 
     public List<Type> getTypes()

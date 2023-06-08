@@ -80,6 +80,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -841,6 +842,8 @@ public final class HttpRemoteTask
         }
 
         List<TaskSource> sources = getSources();
+
+        log.info("Task %s, planFragment %s", taskId.toString(), planFragment.toJson(planFragmentCodec));
 
         Optional<byte[]> fragment = sendPlan.get() ? Optional.of(planFragment.toBytes(planFragmentCodec)) : Optional.empty();
         Optional<TableWriteInfo> writeInfo = sendPlan.get() ? Optional.of(tableWriteInfo) : Optional.empty();
